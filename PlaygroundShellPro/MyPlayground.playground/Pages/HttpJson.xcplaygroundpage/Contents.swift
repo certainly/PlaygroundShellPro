@@ -10,14 +10,17 @@ struct Post: Codable {
 
 struct Feed: Codable {
     let feed: FeedItem
+
     struct FeedItem: Codable {
-        let results: [Result]
+        let results: [ChartListItem]
     }
-//    let titile: String
-    struct  Result: Codable {
-        let name: String
-    }
-//    let results: [Result]
+
+}
+
+struct ChartListItem: Codable {
+    let name: String
+    let artistName: String
+    let artworkUrl100: URL
 }
 
 enum Result<Value> {
