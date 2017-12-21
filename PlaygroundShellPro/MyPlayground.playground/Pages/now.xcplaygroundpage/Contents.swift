@@ -13,6 +13,16 @@ struct Photo: Codable
     //PhotoType and Size are also Codable types
     var type: PhotoType
     var size: Size
+
+    enum CodingKeys: String, CodingKey
+    {
+        case title = "na3me"
+        case url
+        case isSample
+        case metaData
+        case type
+        case size
+    }
 }
 
 struct Size: Codable
@@ -39,7 +49,7 @@ let jsonString = """
 "width":150,
 "height":150
 },
-"title":"Apple",
+"name":"Apple",
 "url":"https:\\/\\/www.fruits.com\\/apple",
 "isSample":true,
 "metaData":{
