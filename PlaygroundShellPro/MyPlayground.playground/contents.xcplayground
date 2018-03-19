@@ -4,5 +4,8 @@
         <page name='now'/>
         <page name='SimpleDecoder'/>
         <page name='HttpJson'/>
+        <page name='testHere'/>
+        <page name='parsejsonFilereal'/>
+        <page name='fp'/>
     </pages>
 </playground>
