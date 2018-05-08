@@ -1,27 +1,28 @@
-func quickSort_theFunctional(_ array: [Int]) -> [Int] {
+class Logger {
+    static let shared = Logger()
 
-    guard array.count > 1 else {
-        return array
+    private init() { }
+
+    func log(_ message: String) {
+        print(message)
     }
-
-    let (pivot, rest) = (array.first!, array.dropFirst())
-
-    let lessThan = rest.filter{ $0 < pivot }
-    let greaterThanOrEqual = rest.filter{ $0 >= pivot }
-
-    return quickSort_theFunctional(lessThan) + ([pivot] as [Int]) + quickSort_theFunctional(greaterThanOrEqual)
 }
 
-// Sorted
-quickSort_theFunctional([Int]()) == [Int]()
-quickSort_theFunctional([7]) == [7]
-quickSort_theFunctional([1, 1, 2, 3, 5, 8, 13]) == [1, 1, 2, 3, 5, 8, 13]
+protocol Logging {
+    func log(_ message: String)
+}
 
-// Nearly Sorted
-quickSort_theFunctional([1, 2, 7, 3, 5, 13, 8]) == [1,  2, 3, 5,7, 8, 13]
+extension Logging {
+    func log(_ message: String) {
+        Logger.shared.log(message)
+    }
+}
 
-// Reversed
-quickSort_theFunctional([1, 1, 2, 3, 5, 8, 13].reversed()) == [1, 1, 2, 3, 5, 8, 13]
+struct MainScreen: Logging {
+    func authenticate() {
+        log("Authentication was successful!")
+    }
+}
 
-// Shuffled
-//quickSort_theFunctional([1, 1, 2, 3, 5, 8, 13].shuffled()) == [1, 1, 2, 3, 5, 8, 13]
+let screen = MainScreen()
+screen.authenticate()
