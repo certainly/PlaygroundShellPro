@@ -1,7 +1,20 @@
-let roshamdo = ["rock", "paper", "scissors"]
-func check(_ left: String, beats right: String) -> Bool {
-    return (3 + roshamdo.firstIndex(of: left)! - roshamdo.firstIndex(of: right)! ) % 3 == 1
+import UIKit
+import PlaygroundSupport
+
+extension URL: ExpressibleByStringLiteral {
+    public init(stringLiteral value: String) {
+        self = URL(string: value)!
+    }
 }
-let computerMove = roshamdo.shuffled().first!
-check("paper", beats: computerMove)
+
+var url:URL = "http://www.baidu.com"
+let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
+    let ss = String(data: data!, encoding: .utf8)!
+    print(ss)
+    PlaygroundPage.current.finishExecution()
+}
+
+task.resume()
+
+PlaygroundPage.current.needsIndefiniteExecution = true
 
