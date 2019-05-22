@@ -12,8 +12,8 @@ print("67jkj07")
 func parse()  {
     var urlComponents = URLComponents()
     urlComponents.scheme = "http"
-    urlComponents.host = "certainly.cf"
-    urlComponents.port = 8001
+    urlComponents.host = "baidu.com"
+//    urlComponents.port = 801
     guard let url = urlComponents.url else { fatalError("Could not create URL from components") }
     var request = URLRequest(url: url)
     request.httpMethod = "GET"
@@ -23,14 +23,13 @@ func parse()  {
     let task = session.dataTask(with: request) { (responseData, response, responseError) in
         print("response ...")
         guard responseError == nil else {
-            print("fail")
-            print(responseError?.localizedDescription)
+            print("fail: \(responseError?.localizedDescription)")
             return
         }
 
         guard let jsonData = responseData else {
             let error = NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey : "Data was not retrieved from request"]) as Error
-            print("succ")
+            print("error \(error)")
             return
         }
 
