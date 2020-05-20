@@ -11,8 +11,11 @@ print("67jkj07")
 let url = URL(string: "https://api.chucknorris.io/jokes/random")!
 
 let dataTask = URLSession.shared.dataTask(with: url) { (data, _, _) in
-    let json = try? JSONSerialization.jsonObject(with: data ?? Data(), options: [])
-    print(json ?? "n/a")
+    if let data = data,  let str = String(data: data, encoding: .utf8) {
+        print("str: \(str)")
+    }
+//    let json = try? JSONSerialization.jsonObject(with: data ?? Data(), options: [])
+//    print(json ?? "n/a")
 
 }
 
