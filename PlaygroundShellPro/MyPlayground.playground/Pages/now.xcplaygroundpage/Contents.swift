@@ -11,90 +11,48 @@ print("67jk444j07")
 //PlaygroundPage.current.needsIndefiniteExecution = true
 
 
-extension URLSession {
-    typealias Handler = (Data?, URLResponse?, Error?) -> Void
-
-    @discardableResult
-    func request(
-        _ endpoint: Endpoint,
-        then handler: @escaping Handler
-    ) -> URLSessionDataTask {
-        let task = dataTask(
-            with: endpoint.url,
-            completionHandler: handler
-        )
-
-        task.resume()
-        return task
-    }
-}
-
-struct Endpoint {
-    var path: String
-    var queryItems: [URLQueryItem] = []
-}
-
-extension Endpoint {
-    var url: URL {
-        var components = URLComponents()
-        components.scheme = "https"
-//        components.host = "api.myapp.com"
-        components.host = "www.baidu.com"
-        components.path = "/" + path
-        components.queryItems = queryItems
-
-        guard let url = components.url else {
-            preconditionFailure(
-                "Invalid URL components: \(components)"
-            )
+extension UIView {
+    func bounceOut(duration: TimeInterval)  {
+        UIView.animate(withDuration: duration) {
+            [unowned self] in
+            self.transform = CGAffineTransform(scaleX: 0.0001, y: 0.0001)
         }
-
-        return url
-    }
-}
-extension Endpoint {
-    static var recommendations: Self {
-        Endpoint(path: "recommendations")
-    }
-
-    static func article(withID id: Int) -> Self {
-        Endpoint(path: "articles/\(id)")
-    }
-
-    static func search(for query: String,
-                       maxResultCount: Int = 100) -> Self {
-        Endpoint(
-            path: "search/\(query)",
-            queryItems: [URLQueryItem(
-                name: "count",
-                value: String(maxResultCount)
-            )]
-        )
     }
 }
 
-func loadArticle(withID id: Int,
-                 using session: URLSession = .shared) {
-    session.request(.article(withID: id)) {
-        data, response, error in
-        if let error = error {
-            print(error.localizedDescription)
-            exit(EXIT_FAILURE)
+extension Int {
+    func times(_ closure: () -> Void) {
+        guard self > 0 else {
+            return
         }
-        if let data = data, let str = String(data: data, encoding: .utf8) {
-            print("data: \(str)")
+        for _ in 0 ..< self {
+            closure()
         }
-        print("ddd")
     }
-
-//    let url = URL(string: "https://api.myapp.com/articles/3")!
-//
-//    let task = URLSession.shared.dataTask(with: url) {
-//          data, response, error in
-//      }
-//
-//      task.resume()
 }
 
-loadArticle(withID: 33)
+extension Array where Element: Comparable  {
+    mutating func remove(item: Element)  {
+        if let location = self.firstIndex(of: item) {
+            self.remove(at: location)
+        }
+    }
 
+}
+
+// some test code to make sure everything works
+let view = UIView()
+view.bounceOut(duration: 3)
+
+5.times { print("Hello") }
+
+var numbers = [1, 2, 3, 4, 5]
+numbers.remove(item: 3)
+
+let view1 = UIView(frame:CGRect(x:0, y:0, width:200, height:500))
+
+view1.backgroundColor=UIColor.blue
+
+
+PlaygroundPage.current.liveView=view1
+view1.bounceOut(duration: 3)
