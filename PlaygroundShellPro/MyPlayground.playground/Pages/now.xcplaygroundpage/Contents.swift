@@ -1,53 +1,58 @@
 import Foundation
+import PlaygroundSupport
+import UIKit
 
-struct Photo: Codable
-{
-    //String, URL, Bool and Date conform to Codable.
-    var title: String
-    var url: URL
-    var isSample: Bool
-    
-    //The Dictionary is of type [String:String] and String already conforms to Codable.
-    var metaData: [String:String]
-    
-    //PhotoType and Size are also Codable types
-    var type: PhotoType
-    var size: Size
-}
+print("67jk444j07")
+//#warning("todo: updatejj")
 
-struct Size: Codable
-{
-    var height: Double
-    var width: Double
-}
 
-enum PhotoType: String, Codable
-{
-    case flower
-    case animal
-    case fruit
-    case vegetable
+
+////////////////////////////////
+//PlaygroundPage.current.needsIndefiniteExecution = true
+
+
+extension UIView {
+    func bounceOut(duration: TimeInterval)  {
+        UIView.animate(withDuration: duration) {
+            [unowned self] in
+            self.transform = CGAffineTransform(scaleX: 0.0001, y: 0.0001)
+        }
+    }
 }
 
-let photoObject = Photo(title: "Hibiscus", url: URL(string: "https://www.flowers.com/hibiscus")!, isSample: false, metaData: ["color" : "red"], type: .flower, size: Size(height: 200, width: 200))
-let encodedData = try? JSONEncoder().encode(photoObject)
+extension Int {
+    func times(_ closure: () -> Void) {
+        guard self > 0 else {
+            return
+        }
+        for _ in 0 ..< self {
+            closure()
+        }
+    }
+}
 
-let jsonString = """
-{
-"type":"fruit",
-"size":{
-"width":150,
-"height":150
-},
-"title":"Apple",
-"url":"https:\\/\\/www.fruits.com\\/apple",
-"isSample":true,
-"metaData":{
-"color":"green"
+extension Array where Element: Comparable  {
+    mutating func remove(item: Element)  {
+        if let location = self.firstIndex(of: item) {
+            self.remove(at: location)
+        }
+    }
+
 }
-}
-"""
-if let jsonData = jsonString.data(using: .utf8)
-{
-    let photoObject = try? JSONDecoder().decode(Photo.self, from: jsonData)
-}
+
+// some test code to make sure everything works
+let view = UIView()
+view.bounceOut(duration: 3)
+
+5.times { print("Hello") }
+
+var numbers = [1, 2, 3, 4, 5]
+numbers.remove(item: 3)
+
+let view1 = UIView(frame:CGRect(x:0, y:0, width:200, height:500))
+
+view1.backgroundColor=UIColor.blue
+
+
+PlaygroundPage.current.liveView=view1
+view1.bounceOut(duration: 3)
