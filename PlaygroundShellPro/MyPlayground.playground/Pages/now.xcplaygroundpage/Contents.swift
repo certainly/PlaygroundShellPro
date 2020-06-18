@@ -10,49 +10,26 @@ print("67jk444j07")
 ////////////////////////////////
 //PlaygroundPage.current.needsIndefiniteExecution = true
 
+let url = URL(string: "https://api.github.com/repos/johnsundell/publish")!
+let publisher = URLSession.shared.dataTaskPublisher(for: url)
 
-extension UIView {
-    func bounceOut(duration: TimeInterval)  {
-        UIView.animate(withDuration: duration) {
-            [unowned self] in
-            self.transform = CGAffineTransform(scaleX: 0.0001, y: 0.0001)
-        }
+let repoPublisher = publisher
+    .map(\.data)
+    .decode(type: Repository.self, decoder: JSONDecoder())
+
+let cancellable = repoPublisher.sink(receiveCompletion: { (completion) in
+    switch completion {
+    case .failure(let error):
+        print(error)
+    case .finished:
+        print("Success")
+
     }
+}) { repo in
+    print(repo)
 }
 
-extension Int {
-    func times(_ closure: () -> Void) {
-        guard self > 0 else {
-            return
-        }
-        for _ in 0 ..< self {
-            closure()
-        }
-    }
+struct Repository: Codable {
+    var name: String
+    var url: URL
 }
-
-extension Array where Element: Comparable  {
-    mutating func remove(item: Element)  {
-        if let location = self.firstIndex(of: item) {
-            self.remove(at: location)
-        }
-    }
-
-}
-
-// some test code to make sure everything works
-let view = UIView()
-view.bounceOut(duration: 3)
-
-5.times { print("Hello") }
-
-var numbers = [1, 2, 3, 4, 5]
-numbers.remove(item: 3)
-
-let view1 = UIView(frame:CGRect(x:0, y:0, width:200, height:500))
-
-view1.backgroundColor=UIColor.blue
-
-
-PlaygroundPage.current.liveView=view1
-view1.bounceOut(duration: 3)
