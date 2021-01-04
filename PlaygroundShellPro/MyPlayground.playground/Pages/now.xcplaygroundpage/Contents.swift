@@ -1,12 +1,14 @@
 import Foundation
 import PlaygroundSupport
-import UIKit
+//import UIKit
+//import SwiftUI
 
+import Combine
 //import os
+import Darwin
+import os
 
-import os.log
-
-print("67jk444j07")
+print("2267jk4j07")
 //#warning("todo: updatejj")
 
 
@@ -14,15 +16,30 @@ print("67jk444j07")
 
 ////////////////////////////////
 
+//import Foundation
+//import Combine
 
-let config = URLSessionConfiguration.default
-config.waitsForConnectivity = true
-config.timeoutIntervalForResource = 300
+var storage = Set<AnyCancellable>()
 
-let session = URLSession(configuration: config)
-
-let url = URL(string: "https://www.example.com/")!
-
-session.dataTask(with: url) { data, response, error in
-    // ...
+struct Cat: Codable {
+    let name: String
+    let age: Int
 }
+
+func requestCat(_ cat: Cat) -> AnyPublisher<Data, Never> {
+    // no error handling - just demo purposes
+    let data = try! JSONEncoder().encode(cat)
+    return Just(data)
+        .eraseToAnyPublisher()
+}
+
+let cat = Cat(name: "Gloria", age: 2)
+
+requestCat(cat)
+    .decode(type: Cat.self, decoder: JSONDecoder())
+    .map { $0.name }
+    .sink { completion in
+        print("completed: \(completion)")
+    } receiveValue: { name in
+        print("cat's name is \(name)")
+    }.store(in: &storage)
