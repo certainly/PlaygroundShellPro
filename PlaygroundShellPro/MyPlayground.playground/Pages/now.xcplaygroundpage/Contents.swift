@@ -16,30 +16,55 @@ print("2267jk4j07")
 
 ////////////////////////////////
 
-//import Foundation
-//import Combine
 
-var storage = Set<AnyCancellable>()
+let url1 = URL(string: "https://jsonplaceholder.typicode.com/posts")!
+let url2 = URL(string: "https://jsonplaceholder.typicode.com/todos")!
 
-struct Cat: Codable {
-    let name: String
-    let age: Int
+let publisher1 = URLSession.shared.dataTaskPublisher(for: url1)
+.map { $0.data }
+.decode(type: [Post].self, decoder: JSONDecoder())
+
+let publisher2 = URLSession.shared.dataTaskPublisher(for: url2)
+.map { $0.data }
+.decode(type: [Todo].self, decoder: JSONDecoder())
+
+let cancellable = Publishers.Zip(publisher1, publisher2)
+.eraseToAnyPublisher()
+.catch { _ in
+    Just(([], []))
+}
+.sink(receiveValue: { posts, todos in
+    print(posts.count)
+    print(todos.count)
+})
+
+enum HTTPError: LocalizedError {
+    case statusCode
+    case post
 }
 
-func requestCat(_ cat: Cat) -> AnyPublisher<Data, Never> {
-    // no error handling - just demo purposes
-    let data = try! JSONEncoder().encode(cat)
-    return Just(data)
-        .eraseToAnyPublisher()
+struct Post: Codable {
+
+    let id: Int
+    let title: String
+    let body: String
+    let userId: Int
 }
 
-let cat = Cat(name: "Gloria", age: 2)
+struct Todo: Codable {
 
-requestCat(cat)
-    .decode(type: Cat.self, decoder: JSONDecoder())
-    .map { $0.name }
+    let id: Int
+    let title: String
+    let completed: Bool
+    let userId: Int
+}
+let url = URL(string: "https://www.baidu.com")!
+let cancellable2 = URLSession.shared.dataTaskPublisher(for: url1)
+    .map{ String(data: $0.data, encoding: .utf8) }
     .sink { completion in
-        print("completed: \(completion)")
-    } receiveValue: { name in
-        print("cat's name is \(name)")
-    }.store(in: &storage)
+//        print(completion) // finished
+    } receiveValue: { counter in
+        print(counter)
+      
+    }
+
