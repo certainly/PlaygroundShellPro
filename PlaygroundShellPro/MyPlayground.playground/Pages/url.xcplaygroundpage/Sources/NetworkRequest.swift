@@ -115,25 +115,41 @@ public struct Wrapper<T: Decodable>: Decodable {
 }
 
 // MARK: - JokeResource
-public struct JokeResource: APIResource {
-    public var url: URL = URL(string: "https://api.chucknorris.io/jokes/random")!
+//public struct JokeResource: APIResource {
+//    public var url: URL = URL(string: "https://api.chucknorris.io/jokes/random")!
+//
+//    public var methodPath: String = ""
+//
+//    public var filter: String?
+//
+//    public typealias ModelType = Joke
+//
+//
+//    public init() {
+//
+//    }
+//
+//}
+
+
+
+
+public struct JSONObjResource<T: Decodable>: APIResource {
+    public typealias ModelType = T
+
+
+    public var url: URL = URL(string: "https://www.baidu.com")!
 
     public var methodPath: String = ""
- 
+
     public var filter: String?
 
-    public typealias ModelType = Joke
 
 
-    public init() {
-
+    public init(ofurl: String) {
+        url  = URL(string: ofurl )!
     }
 
-}
-
-public struct Joke: Decodable {
-    public let url: String?
-    public let id: String?
 }
 
 // MARK: - QuestionsResource

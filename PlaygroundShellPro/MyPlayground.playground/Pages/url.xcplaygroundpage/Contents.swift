@@ -20,7 +20,7 @@ print("67jkj07")
 //    }
 //}
 var aRequest : StringRequest?
-private var jokeRequest: APIRequest<JokeResource>?
+private var jokeRequest: APIRequest<JSONObjResource<Joke>>?
 func loadString() {
     let url = URL(string: "https://api.chucknorris.io/jokes/random")!
 //    let url = URL(string: "https://www.starwars.com")!
@@ -33,8 +33,14 @@ func loadString() {
 
 }
 
+
+public struct Joke: Decodable {
+    public let url: String?
+    public let id: String?
+}
+
 func loadJoke() {
-    let resource = JokeResource()
+    let resource = JSONObjResource<Joke>(ofurl: "https://api.chucknorris.io/jokes/random")
     let request = APIRequest(resource: resource)
     jokeRequest = request
     jokeRequest?.execute { data in
@@ -44,8 +50,10 @@ func loadJoke() {
 
 }
 
-//loadJoke()
-loadString()
+
+
+loadJoke()
+//loadString()
 
 
 //if true { exit(0) }
