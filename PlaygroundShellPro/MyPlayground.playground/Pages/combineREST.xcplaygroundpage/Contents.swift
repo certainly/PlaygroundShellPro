@@ -5,7 +5,7 @@ import Combine
 
 print("dfdf")
 
-var cancellables = Set<AnyCancellable>()
+//var cancellables = Set<AnyCancellable>()
 
 class MyClass {
     var rz: String = ""
@@ -13,8 +13,7 @@ class MyClass {
 
 let url = URL(string: "https://api.chucknorris.io/jokes/random")!
 var myObject = MyClass()
-URLSession
-    .shared
+var cancellables = URLSession.shared
     .dataTaskPublisher(for: url)
 //    .map(\.data)
     .map{ String(data: $0.data, encoding: .utf8) }
@@ -25,4 +24,4 @@ URLSession
        }) { post in
            print(post!)
        }
-    .store(in: &cancellables)
+//    .store(in: &cancellables)
